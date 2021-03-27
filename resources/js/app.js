@@ -9,7 +9,7 @@ import Home from '../js/components/Home.vue';
 import ContactList from '../js/components/ContactList.vue';
 import AddContact from '../js/components/AddContact.vue';
 
-/* sweetaler2 */
+/* sweetalert2 */
 import VueSweetalert2 from 'vue-sweetalert2';
 window.Swal = require('sweetalert2');
 Vue.use(VueSweetalert2);

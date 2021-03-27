@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/* Added Route Wildcard to avoid page error 404 */ 
+Route::get('/{any?}', function () {
     return view('welcome');
-});
+})->where('any', '^(?!api).*$');

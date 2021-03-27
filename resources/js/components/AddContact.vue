@@ -1,9 +1,8 @@
 <template>
 <div class="container">
   <h2 class="text-center p-2 text-white bg-primary mt-5">Add Contact</h2>
-
   <div class="card-body">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-6 offset-md-3" style="padding: 10px; background-color: #d5d5d5;">
       <form id="validateForm" 
         @submit.prevent="saveContact"
         enctype="multipart/form-data"
@@ -130,6 +129,8 @@ export default {
               title: 'Success!',
               html: 'Processed query successfully!'
             });
+            this.$router.push({ name: 'contacts' });
+
             console.log(resp);
 
           }else{
