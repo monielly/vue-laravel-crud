@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+$base_class = "App\Http\Controllers";
+//fetch contact
+Route::get('getContacts',
+            $base_class.'\ContactController@getContacts');
+
+//Save contact
+Route::post('saveContact',
+             $base_class.'\ContactController@saveContact');
