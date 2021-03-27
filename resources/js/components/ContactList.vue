@@ -25,7 +25,13 @@
           <td scope="row">{{ contact.email }}</td>
           <td scope="row">{{ contact.designation }}</td>
           <td scope="row">{{ contact.contact_no }}</td>
-          <td><button class="btn btn-danger btn-sm">Delete</button></td>
+          <td>
+            <router-link class="btn btn-warning btn-sm" 
+                         :to="{ name:'edit_contact', params: {id:contact.id} }
+            ">Edit
+            </router-link> 
+            <button class="btn btn-danger btn-sm" @click.prevent="deleteContact(contact.id)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -39,6 +45,12 @@ export default {
   created(){
     this.loadData();
   },
+  data(){
+    return {
+      url: document.head.querySelector('meta[name="url"]').content,
+      contacts: []
+    }
+  },
   methods: {
     loadData(){
       let url = this.url + '/api/getContacts';
@@ -46,16 +58,48 @@ export default {
         this.contacts = resp.data;
         // console.log(this.contacts);
       })
-    }
+    },
+    deleteContact(id){
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          let url = this.url + `/api/deleteContact/${id}`;
+          this.axios.delete(url).then(resp => {
+            if(resp.status){
+              this.loadData();
+              this.$toast.open({
+                message: "Deleted data successfully!",
+                type: "success",
+                position: "bottom-right",
+                duration: 5000,
+                dismissible: false
+              });
+
+            }else{
+              this.$toast.open({
+                message: "Deleting data failed!",
+                type: "error",
+                position: "bottom-right",
+                duration: 5000,
+                dismissible: false
+              });
+            }
+          });
+        }
+      });
+    },
+
   },
   mounted(){
     console.log("Mounted!");
-  },
-  data(){
-    return {
-      url: document.head.querySelector('meta[name="url"]').content,
-      contacts: []
-    }
   }
 }
 </script>

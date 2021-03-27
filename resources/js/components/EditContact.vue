@@ -3,9 +3,9 @@
   <h2 class="text-center p-2 text-white bg-primary mt-5">Add Contact</h2>
   <div class="card-body">
     <div class="col-md-6 offset-md-3" style="padding: 10px; background-color: #d5d5d5;">
-      <form id="validateForm" 
-        @submit.prevent="saveContact"
-        enctype="multipart/form-data"
+      <form id="validateForm"
+            @submit.prevent="updateContact"
+            enctype="multipart/form-data"
       >
         <div class="form-group">
           <label for="">Name</label>
@@ -46,14 +46,24 @@
         <div class="form-group">
          <label for="">Biography</label>
          <textarea type="text" 
-                id="biography" 
+                id="bio" 
                 placeholder="Enter Biography..."
                 cols="20"
                 rows="5"
                 class="form-control"
-                v-model="contact.biography"
+                v-model="contact.bio"
+          >
+          </textarea>
+         </div>
+         <br>
+         <div class="form-group"
+          v-if="contact.image"
          >
-         </textarea>
+          <img :src="`${url + '/'+contact.image}`"
+               alt=""
+               width="150"
+               height="auto"
+          >
          </div>
           <div class="form-group">
             <label for="">File</label>
@@ -62,7 +72,7 @@
                 id="image" 
                 class="custom-file-input"
                 placeholder="Enter Biography..."
-                v-on:change="saveImage"
+                v-on:change="onImageChange"
               >
             </div>
           </div>  
@@ -88,61 +98,54 @@ export default {
       contact: {},
       name: '',
       email: '',
-      biography: '',
+      bio: '',
       designation: '',
-      contact_no: ''
+      contact_no: '',
+      image: ''
     }
   },
+  created() {
+    this.editContact();
+  },
+  mounted: function(){
+    console.log("Ready form loaded.");
+  },
   methods: {
-    saveContact(){
-      if(!this.contact.name ||
-         !this.contact.email ||
-         !this.contact.biography ||
-         !this.contact.designation ||
-         !this.image ||
-         !this.contact.contact_no
-      ){
-        this.$toast.open({
-          message: "Please complete the form before submitting!",
-          type: "error",
-          position: "bottom-right",
-          duration: 5000,
-          dismissible: false
-        });
-      }else{
+    editContact(){
+      let url = this.url + `/api/editContact/${this.$route.params.id}`;
+      this.axios.get(url).then((resp) =>{
+        this.contact = resp.data;
+      });
+    },
+    updateContact(){
         let formData = new FormData();
         formData.append('name', this.contact.name);
         formData.append('email', this.contact.email);
-        formData.append('biography', this.contact.biography);
+        formData.append('biography', this.contact.bio);
         formData.append('designation', this.contact.designation);
         formData.append('image', this.image);
         formData.append('contact_no', this.contact.contact_no);
 
-        let url = this.url + '/api/saveContact';
+        let url = this.url + `/api/updateContact/${this.$route.params.id}`;
         this.axios.post(url, formData).then((resp) => {
           if(resp.status){
-           
-           document.getElementById("name").value = "";
-           document.getElementById("email").value = "";
-           document.getElementById("biography").value = "";
-           document.getElementById("designation").value = "";
-           document.getElementById("image").value = "";
-           document.getElementById("contact_no").value = "";
-
+            
             this.$toast.open({
-              message: "Added new data successfully!",
+              message: "Updating data successfully!",
               type: "success",
               position: "bottom-right",
               duration: 5000,
               dismissible: false
             })
-            // this.$router.push({ name: 'contacts' });
+            this.$router.push({
+               name: 'contacts' 
+            });
 
             console.log(resp);
 
           }else{
            this.$toast.open({
-             message: "Adding new data failed!",
+             message: "Updating data failed!",
              type: "error",
              position: "bottom-right",
              duration: 5000,
@@ -151,7 +154,7 @@ export default {
           }
         }).catch(error =>{
           this.$toast.open({
-            message: "Adding new data failed!",
+            message: "Updating data failed!",
             type: "error",
             position: "bottom-right",
             duration: 5000,
@@ -159,19 +162,11 @@ export default {
           });
             console.log(error);
         });
-      }
     },
-    saveImage(e){
+    onImageChange(e){
       this.image = e.target.files[0];
       console.log(this.image);
     }
-  },
-  mounted: function(){
-    console.log("Ready form loaded.");
   }
 }
 </script>
-
-<style>
-
-</style>
