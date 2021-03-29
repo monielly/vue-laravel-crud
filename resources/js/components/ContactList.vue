@@ -57,7 +57,7 @@ export default {
       this.axios.get(url).then(resp=> {
         this.contacts = resp.data;
         // console.log(this.contacts);
-      })
+      });
     },
     deleteContact(id){
       Swal.fire({
@@ -76,13 +76,12 @@ export default {
             if(resp.status){
               this.loadData();
               this.$toast.open({
-                message: "Deleted data successfully!",
+                message: "Data deleted successfully!",
                 type: "success",
                 position: "bottom-right",
                 duration: 5000,
                 dismissible: false
               });
-
             }else{
               this.$toast.open({
                 message: "Deleting data failed!",
@@ -96,10 +95,14 @@ export default {
         }
       });
     },
-
   },
   mounted(){
     console.log("Mounted!");
   }
 }
 </script>
+<style>
+#swal2-title, #swal2-content {
+  font-size: 15px;
+}
+</style>

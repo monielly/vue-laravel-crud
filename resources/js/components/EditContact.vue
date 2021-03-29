@@ -59,7 +59,7 @@
          <div class="form-group"
           v-if="contact.image"
          >
-          <img :src="`${url + '/'+contact.image}`"
+          <img :src="`${url + '/' + contact.image}`"
                alt=""
                width="150"
                height="auto"
