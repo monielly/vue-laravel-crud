@@ -17,11 +17,13 @@ Vue.use(VueSweetalert2);
 
 import VueToast from 'vue-toast-notification';
 // Import one of the available themes
-//import 'vue-toast-notification/dist/theme-default.css';
+// Import 'vue-toast-notification/dist/theme-default.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
 Vue.use(VueToast);
 
+/* Importing Vuetify */
+import Vuetify from './plugins/vuetify';
 
 /* import utils from './helpers/utilities';
 Vue.prototype.$utils = utils; */
@@ -55,4 +57,9 @@ const routes = [{
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes })
-const app = new Vue(Vue.util.extend({ router }, App)).$mount('#app');
+const app = new Vue({
+    vuetify: Vuetify,
+    el: '#app',
+    router,
+    render: h => h(App)
+});

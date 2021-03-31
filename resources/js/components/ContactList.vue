@@ -1,40 +1,71 @@
 <template>
   <div class="container">
-    <h2 class="text-center p-2 text-white bg-primary mt-5">Contacts</h2>
-
-    <div class="text-right">
-      <router-link to="/add_contact">
-        <button class="btn btn-success btn-sm">Add New</button>
-      </router-link>
+    <div v-if="loading == true" :loading="loading"
+         class="mt-5"
+    >
+      <v-skeleton-loader
+        class="mx-auto"
+        max-width="100%"
+        type="table"
+      ></v-skeleton-loader>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Designation</th>
-          <th scope="col">Contact Number</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody v-for="contact in contacts" :key="contact.id">
-        <tr>
-          <td scope="row">{{ contact.id }}</td>
-          <td scope="row">{{ contact.name }}</td>
-          <td scope="row">{{ contact.email }}</td>
-          <td scope="row">{{ contact.designation }}</td>
-          <td scope="row">{{ contact.contact_no }}</td>
-          <td>
-            <router-link class="btn btn-warning btn-sm" 
-                         :to="{ name:'edit_contact', params: {id:contact.id} }
-            ">Edit
-            </router-link> 
-            <button class="btn btn-danger btn-sm" @click.prevent="deleteContact(contact.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="loading == false" :loading="loading">
+      <h2 class="text-center p-2 text-white bg-primary mt-5">Contacts</h2>
+      <!-- <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Designation</th>
+            <th scope="col">Contact Number</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody v-for="contact in contacts" :key="contact.id">
+          <tr>
+            <td scope="row">{{ contact.id }}</td>
+            <td scope="row">{{ contact.name }}</td>
+            <td scope="row">{{ contact.email }}</td>
+            <td scope="row">{{ contact.designation }}</td>
+            <td scope="row">{{ contact.contact_no }}</td>
+            <td>
+              <router-link class="btn btn-warning btn-sm" 
+                          :to="{ name:'edit_contact', params: {id:contact.id} }
+              ">Edit
+              </router-link> 
+              <button class="btn btn-danger btn-sm" @click.prevent="deleteContact(contact.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+       <v-card>
+        <v-card-title>
+          Contact Records |  
+          <router-link to="/add_contact">
+            <button class="btn btn-success btn-sm">Add New</button>
+          </router-link>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="headers"
+          :items="contacts"
+          :loading="loading"
+          :search="search"
+          :items-per-page="5"
+          loading-text="Loading... Please wait"
+          class="elevation-1"
+        >
+        </v-data-table>
+      </v-card>  
+    </div>
   </div>
 </template>
 
@@ -42,20 +73,34 @@
 export default {
   name: 'Contact',
 
-  created(){
-    this.loadData();
-  },
   data(){
     return {
       url: document.head.querySelector('meta[name="url"]').content,
-      contacts: []
+      contacts: [],
+      loading: true,
+      loaded: false,
+      search: "",
+      headers: [
+        { text: "#", value: "id" },
+        { text: "Name", value: "name" },
+        { text: "Email", value: "email" },
+        { text: "Biography", value: "bio" },
+        { text: "Contact Number", value: "contact_no" },
+        { text: "Designation", value: "designation" }
+      ]
+    }
+  },
+  inject: {
+    theme: {
+      default: { isDark: false },
+      //another....
     }
   },
   methods: {
     loadData(){
       let url = this.url + '/api/getContacts';
-      this.axios.get(url).then(resp=> {
-        this.contacts = resp.data;
+      this.axios.get(url).then((resp) => {
+        this.contacts = resp.data.contacts;
         // console.log(this.contacts);
       });
     },
@@ -97,6 +142,12 @@ export default {
     },
   },
   mounted(){
+    this.loadData();
+
+    this.intervalid1 = setInterval(function(){
+      this.loading = false;
+      this.loaded = true;
+    }.bind(this), 3000);
     console.log("Mounted!");
   }
 }

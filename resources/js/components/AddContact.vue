@@ -168,10 +168,9 @@ export default {
   },
   mounted: function(){
     console.log("Ready form loaded.");
+  },
+  created(){
+    console.log(this.url);
   }
 }
 </script>
-
-<style>
-
-</style>

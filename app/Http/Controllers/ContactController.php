@@ -10,8 +10,8 @@ use App\Models\Contact;
 class ContactController extends Controller
 {
     public function getContacts(){
-        $contacts = DB::select('SELECT * FROM contacts');
-        return $contacts;
+      $contacts = DB::select('SELECT * FROM contacts');
+      return response()->json(['contacts' => $contacts], 200);
     }
 
     public function saveContact(Request $req){
