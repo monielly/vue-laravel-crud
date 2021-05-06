@@ -29,7 +29,9 @@ const routes = [{
   component: EditContact
 }];
 
+/* You must put "mode: history" to remove hashtag on router-url */
 const router = new VueRouter({ 
+  mode: 'history',
   routes: routes 
 });
 

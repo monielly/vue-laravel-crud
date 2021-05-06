@@ -18,16 +18,16 @@
               <button class="btn btn-success btn-sm">Add New</button>
             </router-link>
             <v-spacer></v-spacer>
-            <!-- <v-text-field
+            <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
               label="Search"
               single-line
               hide-details
             >
-            </v-text-field> -->
+            </v-text-field>
           </v-card-title>
-          <!-- <v-data-table
+          <v-data-table
             :headers="headers"
             :items="contacts"
             :loading="loading"
@@ -36,9 +36,16 @@
             loading-text="Loading... Please wait"
             class="elevation-1"
           >
-          </v-data-table> -->
+            <template v-slot:item.actions="{ item }">
+              <router-link class="btn btn-warning btn-sm" 
+                          :to="{ name:'edit_contact', params: { id:item.id } }
+              ">Edit
+              </router-link> 
+              <button class="btn btn-danger btn-sm" @click.prevent="deleteContact(item.id)">Delete</button>
+            </template>
+          </v-data-table>
         </v-card>  
-      <table class="table">
+      <!-- <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -65,7 +72,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </div>
   </div>
 </template>
@@ -80,15 +87,16 @@ export default {
       contacts: [],
       loading: true,
       loaded: false,
-      // search: "",
-      // headers: [
-      //   { text: "#", value: "id" },
-      //   { text: "Name", value: "name" },
-      //   { text: "Email", value: "email" },
-      //   { text: "Biography", value: "bio" },
-      //   { text: "Contact Number", value: "contact_no" },
-      //   { text: "Designation", value: "designation" }
-      // ]
+      search: "",
+      headers: [
+        { text: "#", value: "id" },
+        { text: "Name", value: "name" },
+        { text: "Email", value: "email" },
+        { text: "Biography", value: "bio" },
+        { text: "Contact Number", value: "contact_no" },
+        { text: "Designation", value: "designation" },
+        { text: "Actions", value: "actions", sortable: false }
+      ]
     }
   },
   inject: {
@@ -102,6 +110,8 @@ export default {
       let url = this.url + '/api/getContacts';
       this.axios.get(url).then((resp) => {
         this.contacts = resp.data.contacts;
+        let cons = console.log;
+        cons(this.contacts);
         // console.log(this.contacts);
       });
     },
