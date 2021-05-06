@@ -15,7 +15,17 @@
           <v-card-title>
             Contact Records |  
             <router-link to="/add_contact">
-              <button class="btn btn-success btn-sm">Add New</button>
+              <v-btn
+                class="mx-3"
+                fab
+                dark
+                small
+                color="indigo"
+              >
+                <v-icon dark>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
             </router-link>
             <v-spacer></v-spacer>
             <v-text-field
@@ -37,14 +47,27 @@
             class="elevation-1"
           >
             <template v-slot:item.actions="{ item }">
-              <router-link class="btn btn-warning btn-sm" 
-                          :to="{ name:'edit_contact', params: { id:item.id } }
-              ">Edit
-              </router-link> 
-              <button class="btn btn-danger btn-sm" @click.prevent="deleteContact(item.id)">Delete</button>
+              <router-link :to="{ name:'edit_contact', params: { id:item.id } }">
+                <v-icon 
+                  aria-hidden="false"
+                  medium
+                  style="color: orange;"
+                >
+                  mdi-pencil
+                </v-icon>
+              </router-link>
+              <button @click.prevent="deleteContact(item.id)">
+                <v-icon
+                  aria-hidden="false"
+                  medium 
+                  style="color: red;"
+                >
+                  mdi-trash-can-outline
+                </v-icon>
+              </button>
             </template>
           </v-data-table>
-        </v-card>  
+        </v-card>
       <!-- <table class="table">
         <thead>
           <tr>
@@ -111,7 +134,7 @@ export default {
       this.axios.get(url).then((resp) => {
         this.contacts = resp.data.contacts;
         let cons = console.log;
-        cons(this.contacts);
+        // cons(this.contacts);
         // console.log(this.contacts);
       });
     },
