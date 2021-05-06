@@ -71,7 +71,7 @@
             Save
            </button>
            <router-link :to="`/contacts`" class="btn btn-sm mt-4">
-            Cancel
+            Back
            </router-link>
          </div>
       </form>

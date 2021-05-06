@@ -11,7 +11,34 @@
     </div>
     <div v-if="loading == false" :loading="loading">
       <h2 class="text-center p-2 text-white bg-primary mt-5">Contacts</h2>
-      <!-- <table class="table">
+        <v-card>
+          <v-card-title>
+            Contact Records |  
+            <router-link to="/add_contact">
+              <button class="btn btn-success btn-sm">Add New</button>
+            </router-link>
+            <v-spacer></v-spacer>
+            <!-- <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            >
+            </v-text-field> -->
+          </v-card-title>
+          <!-- <v-data-table
+            :headers="headers"
+            :items="contacts"
+            :loading="loading"
+            :search="search"
+            :items-per-page="5"
+            loading-text="Loading... Please wait"
+            class="elevation-1"
+          >
+          </v-data-table> -->
+        </v-card>  
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -38,33 +65,7 @@
             </td>
           </tr>
         </tbody>
-      </table> -->
-       <v-card>
-        <v-card-title>
-          Contact Records |  
-          <router-link to="/add_contact">
-            <button class="btn btn-success btn-sm">Add New</button>
-          </router-link>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="contacts"
-          :loading="loading"
-          :search="search"
-          :items-per-page="5"
-          loading-text="Loading... Please wait"
-          class="elevation-1"
-        >
-        </v-data-table>
-      </v-card>  
+      </table>
     </div>
   </div>
 </template>
@@ -79,15 +80,15 @@ export default {
       contacts: [],
       loading: true,
       loaded: false,
-      search: "",
-      headers: [
-        { text: "#", value: "id" },
-        { text: "Name", value: "name" },
-        { text: "Email", value: "email" },
-        { text: "Biography", value: "bio" },
-        { text: "Contact Number", value: "contact_no" },
-        { text: "Designation", value: "designation" }
-      ]
+      // search: "",
+      // headers: [
+      //   { text: "#", value: "id" },
+      //   { text: "Name", value: "name" },
+      //   { text: "Email", value: "email" },
+      //   { text: "Biography", value: "bio" },
+      //   { text: "Contact Number", value: "contact_no" },
+      //   { text: "Designation", value: "designation" }
+      // ]
     }
   },
   inject: {
@@ -147,7 +148,7 @@ export default {
     this.intervalid1 = setInterval(function(){
       this.loading = false;
       this.loaded = true;
-    }.bind(this), 3000);
+    }.bind(this), 1000);
     console.log("Mounted!");
   }
 }
