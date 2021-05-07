@@ -38,6 +38,7 @@
             </v-text-field>
           </v-card-title>
           <v-data-table
+             height="50vh"
             :headers="headers"
             :items="contacts"
             :loading="loading"
@@ -47,16 +48,31 @@
             class="elevation-1"
           >
             <template v-slot:item.actions="{ item }">
-              <router-link :to="{ name:'edit_contact', params: { id:item.id } }">
-                <v-icon 
-                  aria-hidden="false"
-                  medium
-                  style="color: orange;"
-                >
-                  mdi-pencil
-                </v-icon>
-              </router-link>
-              <button @click.prevent="deleteContact(item.id)">
+              <v-btn
+                class="ma-2"
+                outlined
+                small
+                fab
+                style="color: orange; "
+              >
+                <router-link :to="{ name:'edit_contact', params: { id:item.id } }">
+                  <v-icon 
+                    aria-hidden="false"
+                    medium
+                    style="color: orange;"
+                  >
+                    mdi-pencil
+                  </v-icon>
+                </router-link>
+              </v-btn>
+              <v-btn
+                class="ma-2"
+                outlined
+                small
+                fab
+                style="color: red;"
+                @click.prevent="deleteContact(item.id)
+              ">
                 <v-icon
                   aria-hidden="false"
                   medium 
@@ -64,7 +80,7 @@
                 >
                   mdi-trash-can-outline
                 </v-icon>
-              </button>
+              </v-btn>
             </template>
           </v-data-table>
         </v-card>
@@ -99,7 +115,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Contact',

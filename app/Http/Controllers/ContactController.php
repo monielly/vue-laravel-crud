@@ -10,7 +10,9 @@ use App\Models\Contact;
 class ContactController extends Controller
 {
     public function getContacts(){
-      $contacts = DB::select('SELECT * FROM contacts');
+			// $contacts = Contact::all(); /* -->Eloquent */
+      // $contacts = DB::table('contacts')->get(); /* -->Query Builder */
+			$contacts = DB::select('SELECT * FROM contacts'); /* -->Query Builder Select */
       return response()->json(['contacts' => $contacts], 200);
     }
 
