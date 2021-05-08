@@ -112,6 +112,14 @@
           </tr>
         </tbody>
       </table> -->
+
+      <!-- Sample condition on respose -->
+      <!-- <div v-for="contact in contacts">
+        <span v-if="contact.id == 15" >
+          <td scope="row">{{ contact.name }}</td>
+        </span>
+      </div> -->
+      
     </div>
   </div>
 </template>

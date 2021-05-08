@@ -122,7 +122,7 @@ export default {
         this.axios.post(url, formData).then((resp) => {
           if(resp.status){
            
-           document.getElementById("name").value = "";
+           this.contact.value = "";
            document.getElementById("email").value = "";
            document.getElementById("biography").value = "";
            document.getElementById("designation").value = "";
